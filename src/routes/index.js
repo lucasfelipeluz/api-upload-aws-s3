@@ -9,24 +9,30 @@ const uploadConfig = require('../config/upload');
 const routes = Router();
 const upload = multer(uploadConfig);
 
-routes.post('/', upload.single('image'), async (request, response) => {
-  const { file } = request;
+routes.post('/', upload.single('image'), async (req, res) => {
+  const { filename } = req.file;
   
   const uploadImagesService = new UploadImagesService();
 
-  await uploadImagesService.execute(file);
+  const status = await uploadImagesService.execute(filename);
 
-  return response.json({ success: true });
+  return res.json({
+    status,
+    filename,
+  });
 });
 
-routes.delete('/:filename', async (request, response) => {
-  const { filename } = request.params;
+routes.delete('/:filename', async (req, res) => {
+  const { filename } = req.params;
 
   const deleteImagesService = new DeleteImagesService();
 
-  await deleteImagesService.execute(filename);
+  const status = await deleteImagesService.execute(filename);
 
-  return response.send();
+  return res.json({
+    status,
+    filename,
+  });
 });
 
 module.exports = routes;

@@ -43,6 +43,7 @@ class S3Storage {
       })
       .promise();
   }
+
 }
 
 module.exports = new S3Storage();
