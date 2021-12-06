@@ -44,6 +44,14 @@ class S3Storage {
       .promise();
   }
 
+  async getUrl(filename) {
+    const result = await this.client.getSignedUrl('getObject', {
+      Bucket: 'aula.node.upload',
+      Key: filename
+    })
+    return result;
+  }
+
 }
 
 module.exports = new S3Storage();

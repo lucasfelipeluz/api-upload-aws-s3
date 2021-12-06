@@ -3,6 +3,7 @@ const multer = require('multer');
 
 const UploadImagesService = require('../services/UploadImagesService');
 const DeleteImagesService = require('../services/DeleteImagesService');
+const GetUrlImages = require('../services/GetUrlImages');
 
 const uploadConfig = require('../config/upload');
 
@@ -34,5 +35,17 @@ routes.delete('/:filename', async (req, res) => {
     filename,
   });
 });
+
+routes.get('/:filename', async (req, res) => {
+  const { filename } = req.params;
+
+  const getUrlImages = new GetUrlImages();
+  const response = await getUrlImages.execute(filename);
+
+  return res.json({
+    linkFile: response,
+    filename,
+  });
+})
 
 module.exports = routes;
